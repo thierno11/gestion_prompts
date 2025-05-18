@@ -6,7 +6,9 @@ from .routes.prompts import prompt_bpr
 from .routes.voter import voter_blpr
 from .routes.notation import notation_bpr
 from .routes.authentification import auth_blp
-# init_database()
+from .routes.achat import achat_blp
+init_database()
+
 app = Flask(__name__)
 
 
@@ -18,3 +20,4 @@ app.register_blueprint(prompt_bpr,url_prefix="/prompts")
 app.register_blueprint(voter_blpr,url_prefix="/votes")
 app.register_blueprint(notation_bpr,url_prefix="/notes")
 app.register_blueprint(auth_blp,url_prefix="/login")
+app.register_blueprint(achat_blp,url_prefix="/achat")

@@ -2,7 +2,7 @@ from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from contextlib import contextmanager
 from ..config import DATABASE_INFO
-from .sript import ENUM_ROLE, ENUM_STATUS, table_groupes, table_utilisateur, table_prompt, table_notation, table_voter
+from .sript import ENUM_ROLE, ENUM_STATUS, table_groupes, table_utilisateur, table_prompt, table_notation, table_voter,table_Achat
 
 def init_database():
     """Initialise la structure de la base de données."""
@@ -10,13 +10,14 @@ def init_database():
         with conn.cursor() as cursor:
             try:
                 # Exécution des scripts dans une transaction
-                cursor.execute(ENUM_ROLE)
-                cursor.execute(ENUM_STATUS)
+                # cursor.execute(ENUM_ROLE)
+                # cursor.execute(ENUM_STATUS)
                 cursor.execute(table_groupes)
                 cursor.execute(table_utilisateur)
                 cursor.execute(table_prompt)
                 cursor.execute(table_notation)
                 cursor.execute(table_voter)
+                cursor.execute(table_Achat)
                 
                 # Validation explicite des modifications
                 conn.commit()
@@ -36,8 +37,7 @@ def get_connection():
         return conn
     finally:
         print("terminee")
-        # if conn is not None:
-        #     conn.close()
+
 
 
 

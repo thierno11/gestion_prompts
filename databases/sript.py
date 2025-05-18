@@ -1,7 +1,7 @@
-ENUM_ROLE = "CREATE TYPE IF NOT EXISTS ROLE AS ENUM ('ADMINISTRATEUR','UTILISATEUR')"
+ENUM_ROLE = "CREATE TYPE  ROLE AS ENUM ('ADMINISTRATEUR','UTILISATEUR')"
 
 ENUM_STATUS = """
-    CREATE TYPE IF NOT EXISTS STATUT AS ENUM (
+    CREATE TYPE  STATUT AS ENUM (
         'EN ATTENTE',
         'ACTIVE',
         'RAPPEL',
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS UTILISATEURS(
     nom VARCHAR(50),
     prenom VARCHAR(100),
     email VARCHAR(70) UNIQUE,
-    password VARCHAR(20),
+    password VARCHAR,
     nom_role ROLE,
     id_groupe INT,
     CONSTRAINT pk_utilisateurs PRIMARY KEY(id_utilisateur),
@@ -39,7 +39,8 @@ table_prompt = """
         libelle TEXT,
         status  STATUT,
         prix DOUBLE PRECISION DEFAULT 1000,
-        date_creation DATE,
+        date_creation TIMESTAMP DEFAULT NOW(),
+        date_modification TIMESTAMP DEFAULT NOW(),
         id_utilisateur INT,
         CONSTRAINT pk_prompts PRIMARY KEY(id_prompt),
         CONSTRAINT fk_utilisateurs_prompts FOREIGN KEY(id_utilisateur) REFERENCES UTILISATEURS(id_utilisateur)
@@ -70,4 +71,14 @@ table_voter = """
         CONSTRAINT fk_prompts_notation_voter FOREIGN KEY (id_prompt)  REFERENCES PROMPTS (id_prompt),
         CONSTRAINT pk_voter PRIMARY KEY(id_utilisateur,id_prompt)
     )
+"""
+
+table_Achat = """
+    CREATE TABLE IF NOT EXISTS ACHATS(
+        id_achat SERIAL PRIMARY KEY,
+        nom_acheteur VARCHAR(50),
+        email_acheteur varchar(50),
+        montant NUMERIC(10,2),
+        id_prompt int,
+        CONSTRAINT fk_prompts_achat FOREIGN KEY(id_prompt) REFERENCES PROMPTS(id_prompt))
 """

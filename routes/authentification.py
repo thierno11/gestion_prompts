@@ -59,14 +59,15 @@ def token_required(f):
         try:
             data = jwt.decode(token, os.getenv
                               ('SECRET_KEY'), algorithms=["HS256"])
-            email = "alphonse@gmail.com" #data.get(email)
+            print(data)
+            email = data["email"]
             # Utilisation de l'ID utilisateur pour la recherche
             user_id = data.get("email")
             requete = "SELECT * FROM UTILISATEURS WHERE email=%s"
             cursor = get_cursor()
             cursor.execute(requete, (email,))
             current_user = cursor.fetchone()
-            
+            print(current_user)
             if not current_user:
                 return jsonify({'message': 'Utilisateur non trouvé!'}), 401
                 
@@ -81,11 +82,17 @@ def token_required(f):
 
 
 
-
-
-
-
-
+def admin(f):
+    @wraps(f)
+    def decorated(*args,**kwargs):
+        data = request.headers.get("Authorization")
+        if not data or len(data.split(" "))<1:
+            return jsonify("Token not found")
+        token = data.split(" ")[1]
+        data = jwt.decode(token,os.getenv("SECRET_KEY"),algorithms=["HS256"])
+        print(data)
+        
+    return decorated
 
 
 
